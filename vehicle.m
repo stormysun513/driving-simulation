@@ -33,7 +33,6 @@ classdef vehicle < handle
             obj.position = obj.position + obj.velocity*step;
         end
     end
-    
     methods (Static)
     end
 end

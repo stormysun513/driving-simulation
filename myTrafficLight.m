@@ -48,7 +48,7 @@ classdef myTrafficLight < handle
         end
         
         function draw(this)
-            fill([0.25 -0.25 -0.25 -0.25] + this.x, ...
+            fill([0.25 -0.25 -0.25 0.25] + this.x, ...
                 [0.25 0.25 -0.25 -0.25] + this.y, [0 0 0]);
             circle(this.x, this.y, 0.25, this.value, this.value);
         end
