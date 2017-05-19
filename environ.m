@@ -27,9 +27,7 @@ classdef environ < handle
         
         % update status of all objects in the environ
         function update(this, delta)
-            if this.light
-                this.light.update(delta);
-            end 
+            this.light.update(delta);
         end
         
         % add a vehicle to environ
@@ -72,6 +70,7 @@ classdef environ < handle
         
         function draw(this)
             this.drawRoads();
+            this.light.draw();
         end
         
         function drawRoads(this)
