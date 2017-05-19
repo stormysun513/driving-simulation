@@ -1,26 +1,35 @@
-% initialize global variables
-env = environ(8, 1);
-light1 = myTrafficLight(-1.25, -1.25, 4);
-car1 = vehicle([-7.5 -0.5], [1, 0], [1, 0]);
+% parameters
+interval = 0.1;
 
+% initialize global variables
+env = environ(8, 1);                                % world_size, lane_width
+light1 = traffLight([-1.25 -1.25], 5, 1);           % pos_x, pos_y, period
+agent = drivingAgent(1, 0.1);                       % max_speed, delta
+car1 = vehicle([-7.5 -0.5], [1, 0], [1, 0], agent); % pos, dir, v
+
+% configure the environment
 env.addLight(light1);
+
+% create a canvas for visual output
 figure('Name', 'Simulation', 'NumberTitle', 'off');
 
 for t = 0:1:200
+% for t = 0:1:2
     
     % hold on to draw multiple figure on a canvas
     hold on;
 
-    % update states of environment
-    env.update(0.1); 
-    
-    % draw environment       
+    % update states of environment and draw
+    env.update(0.1);      
     env.draw();
     
     % a single car
-    car1.moveStep(0.1)
+    % car1.moveStep(0.1)
+    car1.update(env);
     car1.draw();
     
     hold off;
     pause(0.03);
 end
+
+close 'Simulation';

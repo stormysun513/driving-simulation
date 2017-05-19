@@ -4,17 +4,22 @@ classdef vehicle < handle
         position
         orientation
         velocity
+        agent
     end
     
     methods
+        
         % constructor
         function this = vehicle(varargin)
             this.position = varargin{1};
             this.orientation = varargin{2}/norm(varargin{2});
-            this.velocity = varargin{2};
+            this.velocity = varargin{3};
+            this.agent = varargin{4};
         end
         
-        function update(this)
+        % update next state based on environment and itself
+        function update(this, env)
+            this.agent.update(env, this);
         end
         
         % draw function for vehicles

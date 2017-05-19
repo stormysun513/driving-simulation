@@ -1,4 +1,4 @@
-classdef myTrafficLight < handle
+classdef traffLight < handle
     
     properties
         x
@@ -15,26 +15,26 @@ classdef myTrafficLight < handle
     
     methods
         
-        function this = myTrafficLight(varargin)
-            this.x = varargin{1};
-            this.y = varargin{2};
-            this.interval = varargin{3};
+        function this = traffLight(varargin)
+            this.x = varargin{1}(1);
+            this.y = varargin{1}(2);
+            this.interval = varargin{2};
+            this.elapsed = varargin{3};
             if nargin > 3
                 this.value = varargin{4};
             else
-                this.value = myTrafficLight.GREEN;
+                this.value = traffLight.GREEN;
             end
-            this.elapsed = 0;
         end
         
         function update(this, delta)
             time = this.elapsed + delta;
             if time >= this.interval
                 % switch state
-                if this.value == myTrafficLight.GREEN
-                    this.value = myTrafficLight.RED;
+                if this.value == traffLight.GREEN
+                    this.value = traffLight.RED;
                 else
-                    this.value = myTrafficLight.GREEN;
+                    this.value = traffLight.GREEN;
                 end
                 this.elapsed = mod(time, this.interval);
             else

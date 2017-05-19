@@ -4,8 +4,8 @@ classdef environ < handle
         world_size
         lane_width
         light
-        intersection_x
-        intersection_y
+        intersect_x
+        intersect_y
         vehicles
     end
     
@@ -17,12 +17,15 @@ classdef environ < handle
     end
 
     methods
+        
         % constructor
         function this = environ(varargin)
             this.world_size = varargin{1};
             this.lane_width = varargin{2};
             this.vehicles = [];
             this.light = [];
+            this.intersect_x = [-1 1] * this.lane_width;
+            this.intersect_y = [-1 1] * this.lane_width;
         end
         
         % update status of all objects in the environ
@@ -57,7 +60,7 @@ classdef environ < handle
         end
         
         function res = addLight(this, l)
-            if isa(l, 'myTrafficLight') == 0
+            if isa(l, 'traffLight') == 0
                 res = false;
                 return;
             end
@@ -66,6 +69,23 @@ classdef environ < handle
         
         function deleteLight(this)
             this.light = [];
+        end
+       
+        function res = getLightStatus(this)
+            res = this.light.getValue();
+        end
+        
+        function dist = getIntersectDist(this, v)
+            pos = v.position;
+            if pos(1) < 0 && pos(2) < 0
+                dist = this.intersect_x(1) - pos(1);
+            elseif pos(1) > 0 && pos(2) > 0
+                dist = this.intersect_x(2) - pos(1);
+            elseif pos(1) > 0 && pos(2) < 0
+                dist = this.intersect_y(1) - pos(2);
+            else
+                dist = this.intersect_y(2) - pos(2);
+            end
         end
         
         function draw(this)
