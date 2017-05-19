@@ -13,14 +13,11 @@ classdef drivingAgent < handle
             this.stack = {stopState()};
             this.max_speed = varargin{1};
             this.interval = varargin{2};
-            this.max_acc = 0.4;
+            this.max_acc = varargin{3};
         end
         
         function update(this, env, vehicle)
             state = this.getCurrentState();
-            
-            disp(state.name);
-            
             state.update(this, env, vehicle);
         end
         
