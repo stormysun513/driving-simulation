@@ -1,4 +1,4 @@
-classdef environ < handle
+classdef environment < handle
     
     properties
         world_size
@@ -19,7 +19,7 @@ classdef environ < handle
     methods
         
         % constructor
-        function this = environ(varargin)
+        function this = environment(varargin)
             this.world_size = varargin{1};
             this.lane_width = varargin{2};
             this.vehicles = [];
@@ -103,9 +103,9 @@ classdef environ < handle
             axis([-1 1 -1 1]*wsize);
             
             % draw road intersection centered at (0, 0)
-            h = fill([-1 -1 1 1]*wsize, [-1 1 1 -1]*lwidth, environ.GRAY);
+            h = fill([-1 -1 1 1]*wsize, [-1 1 1 -1]*lwidth, environment.GRAY);
             set(h, 'EdgeColor', 'None');
-            h = fill([-1 1 1 -1]*lwidth, [-1 -1 1 1]*wsize, environ.GRAY);
+            h = fill([-1 1 1 -1]*lwidth, [-1 -1 1 1]*wsize, environment.GRAY);
             set(h, 'EdgeColor', 'None');
             
             % draw lane boundaries ([x1 x2], [y1 y2])

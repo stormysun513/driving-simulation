@@ -1,4 +1,4 @@
-classdef drivingAgent < handle
+classdef simpleAgent < handle
     
     properties
         stack
@@ -9,7 +9,7 @@ classdef drivingAgent < handle
     
     methods
         
-        function this = drivingAgent(varargin)
+        function this = simpleAgent(varargin)
             this.stack = {stopState()};
             this.max_speed = varargin{1};
             this.interval = varargin{2};

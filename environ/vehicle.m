@@ -14,12 +14,25 @@ classdef vehicle < handle
             this.position = varargin{1};
             this.orientation = varargin{2}/norm(varargin{2});
             this.velocity = varargin{3};
-            this.agent = varargin{4};
+            if nargin > 3
+                this.agent = varargin{4};
+            else
+                this.agent = [];
+            end
         end
         
         % update next state based on environment and itself
         function update(this, env)
-            this.agent.update(env, this);
+            if isempty(this.agent) == false
+                this.agent.update(env, this);
+            else
+                error('No driving agent is assigned.');
+            end
+        end
+        
+        % set internal attribute directly
+        function setPos(this, position)
+            this.position = position;
         end
         
         % draw function for vehicles
@@ -35,12 +48,5 @@ classdef vehicle < handle
             plot(tmp(:,1)', tmp(:,2)', 'b', 'LineWidth', 2);
             fill(tmp(:,1)', tmp(:,2)', [0 0.8 0]);
         end
-        
-        % move function
-        function moveStep(obj, step)
-            obj.position = obj.position + obj.velocity*step;
-        end
-    end
-    methods (Static)
     end
 end

@@ -2,14 +2,21 @@ classdef slowDownState < advstate
     
     properties
         name = 'slowDownState'
+        brake
     end
     
     methods
-        function update(~, agent, env, vehicle)
+        % constructor
+        function this = slowDownState(acc)
+            this.brake = acc;
+        end
+        
+        % update funciton of slowDownState
+        function update(this, agent, env, vehicle)
             
             % accelerate
             dir = -vehicle.orientation;
-            a = dir/norm(dir)*agent.max_acc;
+            a = dir/norm(dir)*this.brake;
             t = agent.interval;
             xi = vehicle.position;
             vi = vehicle.velocity;

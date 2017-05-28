@@ -1,5 +1,4 @@
-
-classdef utilFuncs
+classdef simUtils
     
     methods (Static)
         % check whether a specified acc is large enough to stop
@@ -13,8 +12,7 @@ classdef utilFuncs
         % return an acc able to stop at a distance with initail velocity v0
         function acc = requiredAccToStop(velocity, distance)
             v = norm(velocity);
-            a = v*v/2/distance;
-            acc = -a*velocity/v;
+            acc = v*v/2/distance;
         end
     end
 end

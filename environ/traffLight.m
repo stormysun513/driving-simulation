@@ -43,30 +43,57 @@ classdef traffLight < handle
             end
         end
         
-        function pos = getPos(this)
-            pos = [this.x this.y];
+        function res = getClosetValue(this, vehicle)
+            pos = vehicle.position;
+            if pos(1)*pos(2) > 0
+                res = this.h_value;
+            else
+                res = this.v_value;
+            end
         end
         
         function res = getValue(this)
             res = this.h_value;
         end
         
+        function setValue(this, val)
+            switch val
+                case 0
+                    this.h_value = traffLight.GREEN;
+                    this.v_value = traffLight.RED;
+                otherwise
+                    this.h_value = traffLight.RED;
+                    this.v_value = traffLight.GREEN;
+            end
+        end
+        
+        % draw the traffic light on the road intersection
         function draw(this)
-            % horizontal
+            % light for horizontal lane
             fill([0.25 -0.25 -0.25 0.25] + this.x, ...
                 [0.25 0.25 -0.25 -0.25] + this.y, [0 0 0]);
-            circle(this.x, this.y, 0.25, this.h_value, this.h_value);
+            traffLight.circle(this.x, this.y, 0.25, this.h_value, this.h_value);
             fill([0.25 -0.25 -0.25 0.25] + -this.x, ...
                 [0.25 0.25 -0.25 -0.25] + -this.y, [0 0 0]);
-            circle(-this.x, -this.y, 0.25, this.h_value, this.h_value);
+            traffLight.circle(-this.x, -this.y, 0.25, this.h_value, this.h_value);
             
-            % verical
+            % light for vertical lane
             fill([0.25 -0.25 -0.25 0.25] + -this.x, ...
                 [0.25 0.25 -0.25 -0.25] + this.y, [0 0 0]);
-            circle(-this.x, this.y, 0.25, this.v_value, this.v_value);
+            traffLight.circle(-this.x, this.y, 0.25, this.v_value, this.v_value);
             fill([0.25 -0.25 -0.25 0.25] + this.x, ...
                 [0.25 0.25 -0.25 -0.25] + -this.y, [0 0 0]);
-            circle(this.x, -this.y, 0.25, this.v_value, this.v_value);
+            traffLight.circle(this.x, -this.y, 0.25, this.v_value, this.v_value);
+        end
+    end
+    
+    methods (Static)     
+        % helper function to draw circle
+        function h = circle(x, y, r, MarkerFaceColor, MarkerEdgeColor)
+            c = [x y];
+            pos = [c-r 2*r 2*r];
+            h = rectangle('Position', pos, 'Curvature', [1 1], ...
+                'FaceColor', MarkerFaceColor, 'Edgecolor', MarkerEdgeColor);
         end
     end
 end
