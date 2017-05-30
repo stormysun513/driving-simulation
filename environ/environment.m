@@ -22,7 +22,7 @@ classdef environment < handle
         function this = environment(varargin)
             this.world_size = varargin{1};
             this.lane_width = varargin{2};
-            this.vehicles = [];
+            this.vehicles = {};
             this.light = [];
             this.intersect_x = [-1 1] * this.lane_width;
             this.intersect_y = [-1 1] * this.lane_width;
@@ -44,7 +44,7 @@ classdef environment < handle
                 return;
             end
             res = true;
-            this.vehicles = [this.vehicles, v];
+            this.vehicles{end+1} = v;
         end
         
         % delete a vehicle from environ
@@ -56,7 +56,7 @@ classdef environment < handle
             if isempty(idx)
                 return;
             end
-            this.vehicles(idx) = [];
+            this.vehicles{idx} = [];
         end
         
         function res = addLight(this, l)
@@ -91,6 +91,10 @@ classdef environment < handle
         function draw(this)
             this.drawRoads();
             this.light.draw();
+            for k=1:length(this.vehicles)
+                v = this.vehicles{k};
+                v.draw();
+            end
         end
         
         function drawRoads(this)

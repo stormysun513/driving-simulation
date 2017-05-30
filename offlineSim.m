@@ -19,6 +19,7 @@ car = vehicle([-7.5 -0.5], [1, 0], [1, 0]);    % pos, dir, v
 
 % configure the environment
 env.addLight(light);
+env.addVehicle(car);
 
 % create a canvas for visual output
 figure('Name', 'Simulation', 'NumberTitle', 'off');
@@ -28,10 +29,9 @@ for i=1:length(time)
     hold on;
     
     light.setValue(light_status(i));
-    env.draw();
-    
     car.setPos([pos_1(i) -0.5]);
-    car.draw();
+    
+    env.draw();
     
     pause(0.005);
     hold off;
