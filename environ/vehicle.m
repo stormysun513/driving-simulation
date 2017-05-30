@@ -12,8 +12,23 @@ classdef vehicle < handle
         % constructor
         function this = vehicle(varargin)
             this.position = varargin{1};
-            this.orientation = varargin{2}/norm(varargin{2});
-            this.velocity = varargin{3};
+            
+            if nargin > 1
+                if ~any(varargin{2})
+                    this.orientation = [1 0];
+                else
+                    this.orientation = varargin{2}/norm(varargin{2});
+                end
+            else
+                this.orientation = [1 0];
+            end
+            
+            if nargin > 2
+                this.velocity = varargin{3};
+            else
+                this.velocity = [0 0];
+            end
+            
             if nargin > 3
                 this.agent = varargin{4};
             else
@@ -33,6 +48,10 @@ classdef vehicle < handle
         % set internal attribute directly
         function setPos(this, position)
             this.position = position;
+        end
+        
+        function pos = getPos(this)
+            pos = this.position;
         end
         
         % draw function for vehicles

@@ -91,6 +91,7 @@ classdef environment < handle
         function draw(this)
             this.drawRoads();
             this.light.draw();
+            
             for k=1:length(this.vehicles)
                 v = this.vehicles{k};
                 v.draw();
