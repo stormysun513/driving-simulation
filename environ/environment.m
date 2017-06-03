@@ -75,6 +75,10 @@ classdef environment < handle
             res = this.light.getValue();
         end
         
+        function dist = getIntersectDistByID(this, idx)
+            dist = this.getIntersectDist(this.vehicles{idx});
+        end
+        
         function dist = getIntersectDist(this, v)
             pos = v.position;
             if pos(1) < 0 && pos(2) < 0
@@ -89,13 +93,17 @@ classdef environment < handle
         end
         
         function draw(this)
+            hold on;
             this.drawRoads();
-            this.light.draw();
+            if ~isempty(this.light)
+                this.light.draw();
+            end
             
             for k=1:length(this.vehicles)
                 v = this.vehicles{k};
                 v.draw();
             end
+            hold off;
         end
         
         function drawRoads(this)

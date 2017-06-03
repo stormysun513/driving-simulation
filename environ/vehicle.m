@@ -1,39 +1,41 @@
 classdef vehicle < handle
     
     properties
+        id
         position
         orientation
         velocity
         agent
     end
     
+    methods (Static)
+        function out = getNextIndex()
+            persistent count;
+            if isempty(count), count = 0; end
+            count = count + 1;
+            out = count;
+        end
+    end
+    
     methods
         
         % constructor
         function this = vehicle(varargin)
-            this.position = varargin{1};
+            this.id = vehicle.getNextIndex();
+            this.position = [0 0];
+            this.orientation = [1 0];
+            this.velocity = [0 0];
             
+            if nargin, this.position = varargin{1}; end
             if nargin > 1
                 if ~any(varargin{2})
-                    this.orientation = [1 0];
+                    warning('zero vector is not allowed for direction');
                 else
                     this.orientation = varargin{2}/norm(varargin{2});
                 end
-            else
-                this.orientation = [1 0];
             end
-            
-            if nargin > 2
-                this.velocity = varargin{3};
-            else
-                this.velocity = [0 0];
-            end
-            
-            if nargin > 3
-                this.agent = varargin{4};
-            else
-                this.agent = [];
-            end
+            if nargin > 2, this.velocity = varargin{3}; end
+            if nargin > 3, this.agent = varargin{4}; end
         end
         
         % update next state based on environment and itself
@@ -45,17 +47,24 @@ classdef vehicle < handle
             end
         end
         
+        % get vehicle id
+        function id = getID(this)
+            id = this.id;
+        end
+        
         % set internal attribute directly
         function setPos(this, position)
             this.position = position;
         end
         
+        % get current position
         function pos = getPos(this)
             pos = this.position;
         end
         
         % draw function for vehicles
         function draw(this)
+            
             r1 = [4/5 -3/5; 3/5 4/5];
             r2 = [4/5 3/5; -3/5 4/5];
             a1 = this.position+(0.25*r1*this.orientation')';

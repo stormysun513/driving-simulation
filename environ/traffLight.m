@@ -19,8 +19,19 @@ classdef traffLight < handle
         function this = traffLight(varargin)
             this.x = varargin{1}(1);
             this.y = varargin{1}(2);
-            this.interval = varargin{2};
-            this.elapsed = varargin{3};
+            
+            if nargin > 1
+                this.interval = varargin{2};
+            else
+                this.interval = 5;
+            end
+            
+            if nargin > 2
+                this.elapsed = varargin{3};
+            else
+                this.elapsed = 0;
+            end
+            
             this.h_value = traffLight.GREEN;
             this.v_value = traffLight.RED;
         end
