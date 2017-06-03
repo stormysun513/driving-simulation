@@ -10,17 +10,18 @@ addpath 'environ/';
 WORLD_SIZE = 8;
 LANE_WIDTH = 1;
 LIGHT_POS = [-1.25 -1.25];
+NUM = 2;
+SAFE_DIST = 1;
 
 % create display objects
 env = environment(WORLD_SIZE, LANE_WIDTH); 
 light = traffLight(LIGHT_POS);
-car1 = vehicle();
-car2 = vehicle();
 
-% configure the environment
+% add light and vehicles to the map
 env.addLight(light);
-env.addVehicle(car1);
-env.addVehicle(car2);
+for i=1:NUM
+    env.addVehicle(vehicle());
+end
 
 % run simulation
 mdl = 'statechart2';
@@ -31,17 +32,23 @@ sim(mdl);
 % create a canvas for visual output
 figure('Name', 'Simulation', 'NumberTitle', 'off');
 
-pos_1 = squeeze(pos_1);
-pos_2 = squeeze(pos_2);
+% prepare light status data
 light_status = squeeze(light_status);
 
 % replay simulation result
 for i=1:length(light_status)
     
+    % update light status
     light.setValue(light_status(i));
-    car1.setPos(pos_1(:, i)');
-    car2.setPos(pos_2(:, i)');
     
+    % update vehicle position
+    % Reminder: dim of 'pos' is [1, NUM, POINTS]
+    for k=1:NUM
+        vehicle = env.getVehicle(k);
+        vehicle.setPos(squeeze(pos(k,:,i)));
+    end
+    
+    % redraw the screen
     env.draw();
     pause(0.005);
 end
