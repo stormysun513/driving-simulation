@@ -17,7 +17,6 @@ classdef environment < handle
     end
 
     methods
-        
         % constructor
         function this = environment(varargin)
             this.world_size = varargin{1};
@@ -59,6 +58,18 @@ classdef environment < handle
             this.vehicles{idx} = [];
         end
         
+        % return the number of vehicle on the map
+        function num = numOfVehicles(this)
+            num = length(this.vehicles);
+        end
+        
+        % return the vehicle instance based on idx
+        function v = getVehicle(this, idx)
+            assert(idx <= this.numOfVehicles());
+            v = this.vehicles{idx};
+        end
+        
+        % add light to the map
         function res = addLight(this, l)
             if isa(l, 'traffLight') == 0
                 res = false;
@@ -67,18 +78,22 @@ classdef environment < handle
             this.light = l;
         end
         
+        % delete the light from the map
         function deleteLight(this)
             this.light = [];
         end
        
+        % return the current status of light on the map
         function res = getLightStatus(this)
             res = this.light.getValue();
         end
         
+        % get the distance from intersection based on vehicle idx
         function dist = getIntersectDistByID(this, idx)
             dist = this.getIntersectDist(this.vehicles{idx});
         end
         
+        % get the distance from intersection based on the vehicle instance
         function dist = getIntersectDist(this, v)
             pos = v.position;
             if pos(1) < 0 && pos(2) < 0
@@ -92,6 +107,7 @@ classdef environment < handle
             end
         end
         
+        % update the screen
         function draw(this)
             hold on;
             this.drawRoads();
@@ -106,8 +122,8 @@ classdef environment < handle
             hold off;
         end
         
+        % draw roads
         function drawRoads(this)
-            
             wsize = this.world_size;    % world size
             lwidth = this.lane_width;   % lane width
             cwwidth = 0.25*lwidth;      % crosswalk width
