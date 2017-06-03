@@ -6,6 +6,7 @@ classdef vehicle < handle
         orientation
         velocity
         agent
+        color
     end
     
     methods (Static)
@@ -25,6 +26,7 @@ classdef vehicle < handle
             this.position = [0 0];
             this.orientation = [1 0];
             this.velocity = [0 0];
+            this.color = rand(1, 3);
             
             if nargin, this.position = varargin{1}; end
             if nargin > 1
@@ -74,7 +76,7 @@ classdef vehicle < handle
             
             tmp = [a1; a2; a22; a11; a1];
             plot(tmp(:,1)', tmp(:,2)', 'b', 'LineWidth', 2);
-            fill(tmp(:,1)', tmp(:,2)', [0 0.8 0]);
+            fill(tmp(:,1)', tmp(:,2)', this.color);
         end
     end
 end
