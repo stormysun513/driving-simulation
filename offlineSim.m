@@ -10,7 +10,7 @@ addpath 'environ/';
 WORLD_SIZE = 8;
 LANE_WIDTH = 1;
 LIGHT_POS = [-1.25 -1.25];
-NUM = 2;
+NUM = 1;
 SAFE_DIST = 1;
 
 % create display objects
@@ -24,9 +24,11 @@ for i=1:NUM
 end
 
 % run simulation
-mdl = 'statechart2';
+mdl = 'statechart';
+load_system(mdl);
+createVehicle(mdl, NUM);
 cs = getActiveConfigSet(mdl);
-set_param(cs, 'StopTime', '10');
+set_param(cs, 'StopTime', '15');
 sim(mdl);
 
 % create a canvas for visual output
