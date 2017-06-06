@@ -6,11 +6,11 @@ clear;
 % add path
 addpath 'environ/';
 
-% params
+% paramss
 WORLD_SIZE = 8;
 LANE_WIDTH = 1;
 LIGHT_POS = [-1.25 -1.25];
-NUM = 3;
+NUM = 2;
 SAFE_DIST = 1;
 
 % create display objects
@@ -18,6 +18,7 @@ env = environment(WORLD_SIZE, LANE_WIDTH);
 light = traffLight(LIGHT_POS);
 
 % add light and vehicles to the map
+vehicle.getOrSetNextIndex(0);
 env.addLight(light);
 for i=1:NUM
     env.addVehicle(vehicle());
@@ -26,9 +27,9 @@ end
 % run simulation
 mdl = 'statechart';
 load_system(mdl);
-% createVehicle(mdl, NUM);
+createVehicle(mdl, NUM);
 cs = getActiveConfigSet(mdl);
-set_param(cs, 'StopTime', '6.5');
+set_param(cs, 'StopTime', '20');
 sim(mdl);
 
 % create a canvas for visual output

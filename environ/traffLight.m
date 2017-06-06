@@ -12,6 +12,7 @@ classdef traffLight < handle
     properties (Constant)
         RED = [1 0 0];
         GREEN = [0 1 0];
+        YELLOW = [1 1 0];
     end
     
     methods
@@ -69,12 +70,18 @@ classdef traffLight < handle
         
         function setValue(this, val)
             switch val
-                case 0
-                    this.h_value = traffLight.GREEN;
-                    this.v_value = traffLight.RED;
-                otherwise
+                case 1
                     this.h_value = traffLight.RED;
                     this.v_value = traffLight.GREEN;
+                case 2
+                    this.h_value = traffLight.RED;
+                    this.v_value = traffLight.YELLOW;
+                case 3
+                    this.h_value = traffLight.GREEN;
+                    this.v_value = traffLight.RED;
+                case 4
+                    this.h_value = traffLight.YELLOW;
+                    this.v_value = traffLight.RED;
             end
         end
         

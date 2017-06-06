@@ -7,14 +7,21 @@ classdef vehicle < handle
         velocity
         agent
         color
+        label
     end
     
     methods (Static)
-        function out = getNextIndex()
+        function out = getOrSetNextIndex(varargin)
             persistent count;
             if isempty(count), count = 0; end
-            count = count + 1;
-            out = count;
+            if nargin
+                if isnumeric(varargin{1})
+                    count = varargin{1};
+                end
+            else
+                count = count + 1;
+                out = count;
+            end
         end
     end
     
@@ -22,11 +29,12 @@ classdef vehicle < handle
         
         % constructor
         function this = vehicle(varargin)
-            this.id = vehicle.getNextIndex();
+            this.id = vehicle.getOrSetNextIndex();
             this.position = [0 0];
             this.orientation = [1 0];
             this.velocity = [0 0];
             this.color = rand(1, 3);
+            this.label = int2str(this.id);
             
             if nargin, this.position = varargin{1}; end
             if nargin > 1
@@ -77,6 +85,9 @@ classdef vehicle < handle
             tmp = [a1; a2; a22; a11; a1];
             plot(tmp(:,1)', tmp(:,2)', 'b', 'LineWidth', 2);
             fill(tmp(:,1)', tmp(:,2)', this.color);
+            
+            label_pos = this.position + [0.4 0.4];
+            text(label_pos(1),label_pos(2),this.label);
         end
     end
 end

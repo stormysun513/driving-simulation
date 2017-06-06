@@ -65,7 +65,6 @@ classdef environment < handle
         
         % return the vehicle instance based on idx
         function v = getVehicle(this, idx)
-            assert(idx <= this.numOfVehicles());
             v = this.vehicles{idx};
         end
         
