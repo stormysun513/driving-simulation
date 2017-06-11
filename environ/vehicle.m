@@ -62,9 +62,15 @@ classdef vehicle < handle
             id = this.id;
         end
         
-        % set internal attribute directly
+        % set position directly
         function setPos(this, position)
             this.position = position;
+        end
+        
+        % set position and orientation directly
+        function setPosDir(this, position, direction)
+            this.position = position;
+            this.orientation = direction;
         end
         
         % get current position
