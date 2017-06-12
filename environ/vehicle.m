@@ -92,7 +92,7 @@ classdef vehicle < handle
             plot(tmp(:,1)', tmp(:,2)', 'b', 'LineWidth', 2);
             fill(tmp(:,1)', tmp(:,2)', this.color);
             
-            label_pos = this.position + [0.4 0.4];
+            label_pos = this.position + [-0.1 0.5];
             text(label_pos(1),label_pos(2),this.label);
         end
     end
