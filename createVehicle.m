@@ -27,6 +27,10 @@ for i=1:count
     v.delete;
 end
 
+% generate rendom strategy
+[~, options] = enumeration('Decision');
+numOfDecision = length(options);
+
 % create vehicles
 cb = sfclipboard;
 cb.copy(v1);
@@ -37,8 +41,12 @@ for i=2:num
     name = strcat('Vehicle', idx);
     v = ch.find('-isa','Stateflow.State','-and','Name',name);
     set(v,'Position',position)
+   
     this = v.find('-isa','Stateflow.Data','-and','Name','this');
+    decision = v.find('-isa','Stateflow.Data','-and','Name','decision');
     set(this.Props,'InitialValue',idx);
+    set(decision.Props,'InitialValue', strcat('Decision.', options{randi(numOfDecision)}));
+    
     position(2) = position(2) + 120;
 end
 
@@ -47,10 +55,13 @@ X = ch.find('-isa','Stateflow.Data','-and','Name','X');
 V = ch.find('-isa','Stateflow.Data','-and','Name','V');
 A = ch.find('-isa','Stateflow.Data','-and','Name','A');
 D = ch.find('-isa','Stateflow.Data','-and','Name','D');
+CAR_SIZE = ch.find('-isa','Stateflow.Data','-and','Name','CAR_SIZE');
+
 set(X.Props.Array,'size',size);
 set(V.Props.Array,'size',size);
 set(A.Props.Array,'size',size);
 set(D.Props.Array,'size',size);
+set(CAR_SIZE.Props.Array,'size',size);
 
 % initialize some internal parameters
 pos = -8:7;
@@ -59,8 +70,11 @@ x = [randsample(pos,num)' -0.5*ones(num,1)];
 v = zeros(num,2);
 a = zeros(num,2);
 d = [ones(num, 1) zeros(num,1)];
+size = repmat([0.3, 0.4], num, 1);
+
 set(X.Props,'InitialValue',mat2str(x));
 set(V.Props,'InitialValue',mat2str(v));
 set(A.Props,'InitialValue',mat2str(a));
 set(D.Props,'InitialValue',mat2str(d));
+set(CAR_SIZE.Props,'InitialValue',mat2str(size));
 

@@ -6,12 +6,13 @@ clear;
 % add path
 addpath 'environ/';
 
-% paramss
+% params
 WORLD_SIZE = 8;
 LANE_WIDTH = 1;
 LIGHT_POS = [-1.25 -1.25];
 NUM = 2;
 SAFE_DIST = 1;
+STOP_TIME = 8;
 
 % create display objects
 env = environment(WORLD_SIZE, LANE_WIDTH); 
@@ -27,9 +28,9 @@ end
 % run simulation
 mdl = 'statechart';
 load_system(mdl);
-createVehicle(mdl, NUM);
+% createVehicle(mdl, NUM);
 cs = getActiveConfigSet(mdl);
-set_param(cs, 'StopTime', '20');
+set_param(cs, 'StopTime', int2str(STOP_TIME));
 sim(mdl);
 
 % create a canvas for visual output
@@ -48,12 +49,12 @@ for i=1:length(light_status)
     % Reminder: dim of 'pos' is [1, NUM, POINTS]
     for k=1:NUM
         vehicle = env.getVehicle(k);
-        vehicle.setPos(squeeze(pos(k,:,i)));
+        vehicle.setPosDir(squeeze(pos(k,:,i)), squeeze(dir(k,:,i)));
     end
     
     % redraw the screen
     env.draw();
-    pause(0.0001);
+    pause(0.01);
 end
 
 % close simulation window
