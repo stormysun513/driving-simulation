@@ -7,6 +7,7 @@ classdef environment < handle
         intersect_x
         intersect_y
         vehicles
+        pedestrians
     end
     
     properties (Constant)
@@ -87,6 +88,25 @@ classdef environment < handle
             res = this.light.getValue();
         end
         
+        % add pedestrian to the map
+        function res = addPedestrian(this, p)
+            if isa(p, 'pedestrian') == 0
+                res = false;
+                return;
+            end
+            if sum(this.vehicles == p) ~= 0
+                res = false;
+                return;
+            end
+            res = true;
+            this.pedestrians{end+1} = p;
+        end
+        
+        % return the pedestrian instance based on idx
+        function v = getPedestrian(this, idx)
+            v = this.pedestrians{idx};
+        end
+        
         % get the distance from intersection based on vehicle idx
         function dist = getIntersectDistByID(this, idx)
             dist = this.getIntersectDist(this.vehicles{idx});
@@ -108,6 +128,7 @@ classdef environment < handle
         
         % update the screen
         function draw(this)
+            clf;
             hold on;
             this.drawRoads();
             if ~isempty(this.light)
@@ -117,6 +138,11 @@ classdef environment < handle
             for k=1:length(this.vehicles)
                 v = this.vehicles{k};
                 v.draw();
+            end
+            
+            for k=1:length(this.pedestrians)
+                p = this.pedestrians{k};
+                p.draw();
             end
             hold off;
         end

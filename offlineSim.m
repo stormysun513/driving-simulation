@@ -12,7 +12,7 @@ LANE_WIDTH = 1;
 LIGHT_POS = [-1.25 -1.25];
 NUM = 2;
 SAFE_DIST = 1;
-STOP_TIME = 8;
+STOP_TIME = 20;
 
 % create display objects
 env = environment(WORLD_SIZE, LANE_WIDTH); 
@@ -24,6 +24,7 @@ env.addLight(light);
 for i=1:NUM
     env.addVehicle(vehicle());
 end
+env.addPedestrian(pedestrian());
 
 % run simulation
 mdl = 'statechart';
@@ -51,6 +52,10 @@ for i=1:length(light_status)
         vehicle = env.getVehicle(k);
         vehicle.setPosDir(squeeze(pos(k,:,i)), squeeze(dir(k,:,i)));
     end
+    
+    % update pedestrians
+    pedestrian = env.getPedestrian(1);
+    pedestrian.setProgress(ppos(i));
     
     % redraw the screen
     env.draw();
