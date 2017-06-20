@@ -12,10 +12,14 @@ for i=1:length(light_status)
     
     % update vehicle position
     % Reminder: dim of 'pos' is [1, NUM, POINTS]
-    for k=1:NUM
+    for k=1:NUM_OF_CARS
         vehicle = env.getVehicle(k);
         vehicle.setPosDir(squeeze(pos(k,:,i)), squeeze(dir(k,:,i)));
     end
+    
+    % update pedestrians
+    pedestrian = env.getPedestrian(1);
+    pedestrian.setProgress(ppos(i));
     
     % redraw the screen
     env.draw();

@@ -1,27 +1,44 @@
-% M-file to run simulink model
+% M-file to run stateflow simulation
 
-% clear variables on workspace
+% clear variables on matlab workspace
 clear;
 
-% add path
+% add path for hui objects
 addpath 'environ/';
 
-% params
+
+% map parameters
 WORLD_SIZE = 8;
 LANE_WIDTH = 1;
-LIGHT_POS = [-1.25 -1.25];
-NUM = 2;
+LIGHT_POSITION = [-1.25 -1.25];
+
+% vehicles configuration
+NUM_OF_CARS = 2;
+
+% traffic rules;
 SAFE_DIST = 1;
+
+% simulation configuration
 STOP_TIME = 20;
+
+
+% pack parameters into a dictionary
+params = containers.Map('UniformValues',false);
+params('WORLD_SIZE') = WORLD_SIZE;
+params('LANE_WIDTH') = LANE_WIDTH;
+params('LIGHT_POSITION') = LIGHT_POSITION;
+params('NUM_OF_CARS') = NUM_OF_CARS;
+params('SAFE_DIST') = SAFE_DIST;
+
 
 % create display objects
 env = environment(WORLD_SIZE, LANE_WIDTH); 
-light = traffLight(LIGHT_POS);
+light = traffLight(LIGHT_POSITION);
 
 % add light and vehicles to the map
 vehicle.getOrSetNextIndex(0);
 env.addLight(light);
-for i=1:NUM
+for i=1:NUM_OF_CARS
     env.addVehicle(vehicle());
 end
 env.addPedestrian(pedestrian());
@@ -29,7 +46,7 @@ env.addPedestrian(pedestrian());
 % run simulation
 mdl = 'statechart';
 load_system(mdl);
-% createVehicle(mdl, NUM);
+% initModelParams(mdl, params);
 cs = getActiveConfigSet(mdl);
 set_param(cs, 'StopTime', int2str(STOP_TIME));
 sim(mdl);
@@ -48,7 +65,7 @@ for i=1:length(light_status)
     
     % update vehicle position
     % Reminder: dim of 'pos' is [1, NUM, POINTS]
-    for k=1:NUM
+    for k=1:NUM_OF_CARS
         vehicle = env.getVehicle(k);
         vehicle.setPosDir(squeeze(pos(k,:,i)), squeeze(dir(k,:,i)));
     end

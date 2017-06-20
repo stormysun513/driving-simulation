@@ -1,4 +1,6 @@
-function createVehicle(mdl, num)
+function initModelParams(mdl, params)
+
+num = params('NUM');
 
 if(num <= 0)
     return;
