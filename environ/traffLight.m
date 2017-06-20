@@ -82,6 +82,8 @@ classdef traffLight < handle
                 case 4
                     this.h_value = traffLight.YELLOW;
                     this.v_value = traffLight.RED;
+                otherwise
+                    % no changes for other intermediate value
             end
         end
         

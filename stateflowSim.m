@@ -6,7 +6,6 @@ clear;
 % add path for hui objects
 addpath 'environ/';
 
-
 % map parameters
 WORLD_SIZE = 8;
 LANE_WIDTH = 1;
@@ -19,7 +18,7 @@ NUM_OF_CARS = 2;
 SAFE_DIST = 1;
 
 % simulation configuration
-STOP_TIME = 20;
+STOP_TIME = 15;
 
 
 % pack parameters into a dictionary
@@ -44,9 +43,9 @@ end
 env.addPedestrian(pedestrian());
 
 % run simulation
-mdl = 'statechart';
+mdl = 'experiment';
 load_system(mdl);
-% initModelParams(mdl, params);
+% configModel(mdl,params);
 cs = getActiveConfigSet(mdl);
 set_param(cs, 'StopTime', int2str(STOP_TIME));
 sim(mdl);
@@ -55,24 +54,24 @@ sim(mdl);
 figure('Name', 'Simulation', 'NumberTitle', 'off');
 
 % prepare light status data
-light_status = squeeze(light_status);
+lightStatus = squeeze(lightStatus);
 
 % replay simulation result
-for i=1:length(light_status)
+for i=1:length(lightStatus)
     
     % update light status
-    light.setValue(light_status(i));
+    light.setValue(lightStatus(i));
     
     % update vehicle position
     % Reminder: dim of 'pos' is [1, NUM, POINTS]
     for k=1:NUM_OF_CARS
         vehicle = env.getVehicle(k);
-        vehicle.setPosDir(squeeze(pos(k,:,i)), squeeze(dir(k,:,i)));
+        vehicle.setPosDir(squeeze(pos(:,k,i))', squeeze(dir(:,k,i))');
     end
     
     % update pedestrians
     pedestrian = env.getPedestrian(1);
-    pedestrian.setProgress(ppos(i));
+    pedestrian.setProgress(ppos(i,1));
     
     % redraw the screen
     env.draw();

@@ -1,2 +1,0 @@
-classdef followFrontState < advstate
-end

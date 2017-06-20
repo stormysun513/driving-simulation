@@ -15,7 +15,7 @@ classdef pedestrian < handle
                 this.start = [-1 -1.125];
             end
             this.length = 2;
-            this.progress = 0;
+            this.progress = -1;
             this.direction = [1 0];
         end
         
