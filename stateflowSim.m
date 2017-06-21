@@ -18,7 +18,7 @@ NUM_OF_CARS = 2;
 SAFE_DIST = 1;
 
 % simulation configuration
-STOP_TIME = 15;
+STOP_TIME = 40;
 
 
 % pack parameters into a dictionary

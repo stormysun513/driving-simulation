@@ -2,24 +2,24 @@
 figure('Name', 'Simulation', 'NumberTitle', 'off');
 
 % prepare light status data
-light_status = squeeze(light_status);
+lightStatus = squeeze(lightStatus);
 
 % replay simulation result
-for i=1:length(light_status)
+for i=1:length(lightStatus)
     
     % update light status
-    light.setValue(light_status(i));
+    light.setValue(lightStatus(i));
     
     % update vehicle position
     % Reminder: dim of 'pos' is [1, NUM, POINTS]
     for k=1:NUM_OF_CARS
         vehicle = env.getVehicle(k);
-        vehicle.setPosDir(squeeze(pos(k,:,i)), squeeze(dir(k,:,i)));
+        vehicle.setPosDir(squeeze(pos(:,k,i))', squeeze(dir(:,k,i))');
     end
     
     % update pedestrians
     pedestrian = env.getPedestrian(1);
-    pedestrian.setProgress(ppos(i));
+    pedestrian.setProgress(ppos(i,1));
     
     % redraw the screen
     env.draw();
