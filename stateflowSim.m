@@ -15,10 +15,10 @@ LIGHT_POSITION = [-1.25 -1.25];
 NUM_OF_CARS = 2;
 
 % traffic rules;
-SAFE_DIST = 1;
+MIN_SAFE_DIST = 1;
 
 % simulation configuration
-STOP_TIME = 40;
+STOP_TIME = 15;
 
 
 % pack parameters into a dictionary
@@ -27,7 +27,7 @@ params('WORLD_SIZE') = WORLD_SIZE;
 params('LANE_WIDTH') = LANE_WIDTH;
 params('LIGHT_POSITION') = LIGHT_POSITION;
 params('NUM_OF_CARS') = NUM_OF_CARS;
-params('SAFE_DIST') = SAFE_DIST;
+params('SAFE_DIST') = MIN_SAFE_DIST;
 
 
 % create display objects
