@@ -39,7 +39,7 @@ vehicle.getOrSetNextIndex(0);
 env.addLight(light);
 for i=1:NUM_OF_CARS
     env.addVehicle(vehicle());
-end
+endstateflowSim
 env.addPedestrian(pedestrian());
 
 % run simulation
