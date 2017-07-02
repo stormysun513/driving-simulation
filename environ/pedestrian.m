@@ -9,14 +9,15 @@ classdef pedestrian < handle
     
     methods
         function this = pedestrian(varargin)
-            if nargin
+            if nargin >= 2
                 this.start = varargin{1};
+                this.direction = varargin{2};
             else
                 this.start = [-1 -1.125];
+                this.direction = [1 0];
             end
             this.length = 2;
             this.progress = -1;
-            this.direction = [1 0];
         end
         
         function setProgress(this, progress)

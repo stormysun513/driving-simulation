@@ -3,9 +3,9 @@
 % clear variables on matlab workspace
 clear;
 
-% add path for hui objects
+% add path for gui objects
 addpath 'environ/';
-
+ 
 % map parameters
 WORLD_SIZE = 8;
 LANE_WIDTH = 1;
@@ -29,7 +29,6 @@ params('LIGHT_POSITION') = LIGHT_POSITION;
 params('NUM_OF_CARS') = NUM_OF_CARS;
 params('SAFE_DIST') = MIN_SAFE_DIST;
 
-
 % create display objects
 env = environment(WORLD_SIZE, LANE_WIDTH); 
 light = traffLight(LIGHT_POSITION);
@@ -40,7 +39,9 @@ env.addLight(light);
 for i=1:NUM_OF_CARS
     env.addVehicle(vehicle());
 end
-env.addPedestrian(pedestrian());
+
+env.addPedestrian(pedestrian([-1 -1.125], [1 0]));
+env.addPedestrian(pedestrian([1.125 -1], [0 1]));
 
 % run simulation
 mdl = 'experiment';
@@ -70,8 +71,11 @@ for i=1:length(lightStatus)
     end
     
     % update pedestrians
-    pedestrian = env.getPedestrian(1);
-    pedestrian.setProgress(ppos(i,1));
+    pedestrian1 = env.getPedestrian(1);
+    pedestrian1.setProgress(ppos(i,1));
+    
+    pedestrian2 = env.getPedestrian(2);
+    pedestrian2.setProgress(ppos(i,2));
     
     % redraw the screen
     env.draw();
