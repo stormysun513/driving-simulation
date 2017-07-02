@@ -18,7 +18,7 @@ NUM_OF_CARS = 2;
 MIN_SAFE_DIST = 1;
 
 % simulation configuration
-STOP_TIME = 15;
+STOP_TIME = 20;
 
 
 % pack parameters into a dictionary
@@ -39,7 +39,7 @@ vehicle.getOrSetNextIndex(0);
 env.addLight(light);
 for i=1:NUM_OF_CARS
     env.addVehicle(vehicle());
-endstateflowSim
+end
 env.addPedestrian(pedestrian());
 
 % run simulation
