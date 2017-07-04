@@ -18,8 +18,10 @@ for i=1:length(lightStatus)
     end
     
     % update pedestrians
-    pedestrian = env.getPedestrian(1);
-    pedestrian.setProgress(ppos(i,1));
+    for j=1:NUM_OF_PEDES
+        pedestrian = env.getPedestrian(j);
+        pedestrian.setProgress(ppos(i,j));
+    end
     
     % redraw the screen
     env.draw();

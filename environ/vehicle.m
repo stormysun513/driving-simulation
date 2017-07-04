@@ -8,6 +8,9 @@ classdef vehicle < handle
         agent
         color
         label
+        frontAngle
+        longSafeDist
+        shortSafeDist
     end
     
     methods (Static)
@@ -36,6 +39,10 @@ classdef vehicle < handle
             this.color = rand(1, 3);
             this.label = int2str(this.id);
             
+            this.frontAngle = 0.7854; % deg2rad(45)
+            this.longSafeDist = 1;
+            this.shortSafeDist = 0.5;
+            
             if nargin, this.position = varargin{1}; end
             if nargin > 1
                 if ~any(varargin{2})
@@ -62,6 +69,14 @@ classdef vehicle < handle
             id = this.id;
         end
         
+        function setLongSafeDist(this, dist)
+            this.longSafeDist = dist;
+        end
+        
+        function setFrontAngle(this, angle)
+            this.frontAngle = deg2rad(angle);
+        end
+        
         % set position directly
         function setPos(this, position)
             this.position = position;
@@ -80,6 +95,11 @@ classdef vehicle < handle
         
         % draw function for vehicles
         function draw(this)
+            this.drawVehicle();
+            this.drawWarnArea();
+        end
+        
+        function drawVehicle(this)
             
             r1 = [4/5 -3/5; 3/5 4/5];
             r2 = [4/5 3/5; -3/5 4/5];
@@ -94,6 +114,39 @@ classdef vehicle < handle
             
             label_pos = this.position + [-0.1 0.5];
             text(label_pos(1),label_pos(2),this.label);
+            
+        end
+        
+        function drawWarnArea(this)
+            
+            theta = this.frontAngle;
+            half = 1.5708;
+            d = this.orientation;
+            x0 = this.position(1);
+            y0 = this.position(2);
+            
+            r1 = 1.1*this.longSafeDist;
+            r2 = this.shortSafeDist;
+            
+            rot1 = [cos(theta) sin(theta); -sin(theta) cos(theta)];
+            rot2 = [cos(half) sin(half); -sin(half) cos(half)];
+            
+            d1 = (rot1*d');
+            d2 = (rot2*d');
+       
+            a1 = atan2(d1(2), d1(1));
+            a2 = a1 + theta*2;
+            t = linspace(a1,a2);
+            x = x0 + r1*cos(t);
+            y = y0 + r1*sin(t);
+            plot([x0,x,x0],[y0,y,y0],'b-')
+            
+            a1 = atan2(d2(2), d2(1));
+            a2 = a1 + half*2;
+            t = linspace(a1,a2);
+            x = x0 + r2*cos(t);
+            y = y0 + r2*sin(t);
+            plot([x0,x,x0],[y0,y,y0],'b-')
         end
     end
 end

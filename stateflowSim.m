@@ -14,11 +14,15 @@ LIGHT_POSITION = [-1.25 -1.25];
 % vehicles configuration
 NUM_OF_CARS = 2;
 
+% pedestrian configuration
+NUM_OF_PEDES = 3;
+
 % traffic rules;
 MIN_SAFE_DIST = 1;
 
 % simulation configuration
-STOP_TIME = 20;
+START_TIME = 0;
+STOP_TIME = 50;
 
 
 % pack parameters into a dictionary
@@ -37,17 +41,21 @@ light = traffLight(LIGHT_POSITION);
 vehicle.getOrSetNextIndex(0);
 env.addLight(light);
 for i=1:NUM_OF_CARS
-    env.addVehicle(vehicle());
+    v = vehicle();
+    v.setFrontAngle(30);
+    env.addVehicle(v);
 end
 
 env.addPedestrian(pedestrian([-1 -1.125], [1 0]));
 env.addPedestrian(pedestrian([1.125 -1], [0 1]));
+env.addPedestrian(pedestrian([1 1.125], [-1 0]));
 
 % run simulation
 mdl = 'experiment';
 load_system(mdl);
 % configModel(mdl,params);
 cs = getActiveConfigSet(mdl);
+set_param(cs, 'StartTime', int2str(START_TIME));
 set_param(cs, 'StopTime', int2str(STOP_TIME));
 sim(mdl);
 
@@ -71,11 +79,10 @@ for i=1:length(lightStatus)
     end
     
     % update pedestrians
-    pedestrian1 = env.getPedestrian(1);
-    pedestrian1.setProgress(ppos(i,1));
-    
-    pedestrian2 = env.getPedestrian(2);
-    pedestrian2.setProgress(ppos(i,2));
+    for j=1:NUM_OF_PEDES
+        pedestrian = env.getPedestrian(j);
+        pedestrian.setProgress(ppos(i,j));
+    end
     
     % redraw the screen
     env.draw();
