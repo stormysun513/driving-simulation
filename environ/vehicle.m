@@ -5,6 +5,7 @@ classdef vehicle < handle
         position
         orientation
         velocity
+        drivingState
         agent
         color
         label
@@ -36,6 +37,7 @@ classdef vehicle < handle
             this.position = [0 0];
             this.orientation = [1 0];
             this.velocity = [0 0];
+            this.drivingState = DrivingState.Straight;
             this.color = rand(1, 3);
             this.label = int2str(this.id);
             
@@ -62,6 +64,11 @@ classdef vehicle < handle
             else
                 error('No driving agent is assigned.');
             end
+        end
+        
+        % set the current driving state
+        function setDrivingState(this, state)
+            this.drivingState = state;
         end
         
         % get vehicle id
@@ -121,14 +128,24 @@ classdef vehicle < handle
             
             theta = this.frontAngle;
             half = 1.5708;
+            
             d = this.orientation;
             x0 = this.position(1);
             y0 = this.position(2);
             
+            offset = 0;
             r1 = 1.1*this.longSafeDist;
             r2 = this.shortSafeDist;
             
-            rot1 = [cos(theta) sin(theta); -sin(theta) cos(theta)];
+            if this.drivingState == DrivingState.RightTurn
+                offset = 0.5236;
+            elseif this.drivingState == DrivingState.LeftTurn
+                offset = -0.5236;
+                r1 = 1.5*r1; 
+            end
+            
+            rot1 = [cos(theta+offset) sin(theta+offset);...
+                -sin(theta+offset) cos(theta+offset)];
             rot2 = [cos(half) sin(half); -sin(half) cos(half)];
             
             d1 = (rot1*d');

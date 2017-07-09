@@ -12,7 +12,7 @@ LANE_WIDTH = 1;
 LIGHT_POSITION = [-1.25 -1.25];
 
 % vehicles configuration
-NUM_OF_CARS = 2;
+NUM_OF_CARS = 3;
 
 % pedestrian configuration
 NUM_OF_PEDES = 3;
@@ -22,8 +22,7 @@ MIN_SAFE_DIST = 1;
 
 % simulation configuration
 START_TIME = 0;
-STOP_TIME = 50;
-
+STOP_TIME = 40;
 
 % pack parameters into a dictionary
 params = containers.Map('UniformValues',false);
@@ -65,6 +64,9 @@ figure('Name', 'Simulation', 'NumberTitle', 'off');
 % prepare light status data
 lightStatus = squeeze(lightStatus);
 
+% prepare driving state data
+dstate = squeeze(dstate);
+
 % replay simulation result
 for i=1:length(lightStatus)
     
@@ -76,6 +78,7 @@ for i=1:length(lightStatus)
     for k=1:NUM_OF_CARS
         vehicle = env.getVehicle(k);
         vehicle.setPosDir(squeeze(pos(:,k,i))', squeeze(dir(:,k,i))');
+        vehicle.setDrivingState(dstate(i, k));
     end
     
     % update pedestrians

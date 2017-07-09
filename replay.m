@@ -4,6 +4,9 @@ figure('Name', 'Simulation', 'NumberTitle', 'off');
 % prepare light status data
 lightStatus = squeeze(lightStatus);
 
+% prepare driving state data
+dstate = squeeze(dstate);
+
 % replay simulation result
 for i=1:length(lightStatus)
     
@@ -15,6 +18,7 @@ for i=1:length(lightStatus)
     for k=1:NUM_OF_CARS
         vehicle = env.getVehicle(k);
         vehicle.setPosDir(squeeze(pos(:,k,i))', squeeze(dir(:,k,i))');
+        vehicle.setDrivingState(dstate(i));
     end
     
     % update pedestrians
