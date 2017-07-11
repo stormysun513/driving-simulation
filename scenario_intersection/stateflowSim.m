@@ -4,7 +4,7 @@
 clear;
 
 % add path for gui objects
-addpath 'environ/';
+addpath '../environ/';
  
 % map parameters
 WORLD_SIZE = 8;
@@ -22,7 +22,7 @@ MIN_SAFE_DIST = 1;
 
 % simulation configuration
 START_TIME = 0;
-STOP_TIME = 40;
+STOP_TIME = 50;
 
 % pack parameters into a dictionary
 params = containers.Map('UniformValues',false);
