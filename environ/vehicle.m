@@ -9,6 +9,7 @@ classdef vehicle < handle
         agent
         color
         label
+        showWarnRegion
         frontAngle
         longSafeDist
         shortSafeDist
@@ -41,6 +42,7 @@ classdef vehicle < handle
             this.color = rand(1, 3);
             this.label = int2str(this.id);
             
+            this.showWarnRegion = true;
             this.frontAngle = 0.7854; % deg2rad(45)
             this.longSafeDist = 1;
             this.shortSafeDist = 0.5;
@@ -76,6 +78,11 @@ classdef vehicle < handle
             id = this.id;
         end
         
+        % enable or diable warning region display
+        function setWarnRegionEnabled(this, enabled)
+            this.showWarnRegion = enabled;
+        end
+        
         function setLongSafeDist(this, dist)
             this.longSafeDist = dist;
         end
@@ -103,7 +110,9 @@ classdef vehicle < handle
         % draw function for vehicles
         function draw(this)
             this.drawVehicle();
-            this.drawWarnArea();
+            if this.showWarnRegion
+                this.drawWarnArea();
+            end
         end
         
         function drawVehicle(this)
@@ -134,7 +143,7 @@ classdef vehicle < handle
             y0 = this.position(2);
             
             offset = 0;
-            r1 = 1.1*this.longSafeDist;
+            r1 = 1*this.longSafeDist;
             r2 = this.shortSafeDist;
             
             if this.drivingState == DrivingState.RightTurn

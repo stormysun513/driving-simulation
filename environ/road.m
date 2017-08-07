@@ -1,9 +1,7 @@
-classdef highway < handle
+classdef road < handle
     
     properties
         world_size
-        lane_width
-        lane_num
         vehicles
     end
     
@@ -12,20 +10,22 @@ classdef highway < handle
         WHITE = [1 1 1];
         BLACK = [0 0 0];
         LANE_LINE = 0.75;
+        LANE_WIDTH = 0.5;
     end
     
     methods
-        
         % constructor
-        function this = highway(varargin)
-            fields = {'world_size','lane_width','lane_num'};
-            this.world_size = 12;
-            this.lane_width = 1;
-            this.lane_num = 4;
-            for i = 1:nargin
+        function this = road(varargin)
+            
+            % default values
+            fields = {'world_size'};
+            this.world_size = 5;
+            this.vehicles = {};
+            
+            % assign values if provided
+            for i = 1:min(nargin, length(fields))
                 this.(fields{i}) = varargin{i};
             end
-            this.vehicles = {};
         end
         
         % add a vehicle to the environment
@@ -34,16 +34,6 @@ classdef highway < handle
             if isa(v, 'vehicle') && sum(this.vehicles == v) == 0
                 this.vehicles{end+1} = v;
                 res = true;
-            end
-        end
-        
-        % delete a vehicle from environ
-        function delVehicle(this, v)
-            if isa(v, 'vehicle')
-                idx = find(this.vehicles == v);
-                if ~isempty(idx)
-                    this.vehicles{idx} = [];
-                end
             end
         end
         
@@ -59,24 +49,30 @@ classdef highway < handle
         
         % update the screen
         function draw(this)
+            
+            % clear the drawing canvas first
             clf;
             hold on;
+            
+            % draw the road first
             this.drawRoads();
             
+            % draw vehicles
             for k=1:length(this.vehicles)
                 v = this.vehicles{k};
                 v.draw();
             end
+            
+            % hold off the current draw operation
             hold off;
         end
         
         % draw roads
         function drawRoads(this)
-            
+             
             wsize = this.world_size;                    % world size
-            lnum = this.lane_num;                       % lane num
-            lwidth = this.lane_width;                   % lane width
-%             lllength = 0.75*lwidth;                     % lane line width
+            lnum = 2;                                   % lane num
+            lwidth = road.LANE_WIDTH;
             
             % compute the width of half road
             rwidth = lwidth*lnum;
@@ -88,19 +84,19 @@ classdef highway < handle
             
             % draw a multi-lane road
             h = fill([-1 -1 1 1]*wsize, [-1 1 1 -1]*hrwidth, ...
-                highway.GRAY);
+                road.GRAY);
             set(h, 'EdgeColor', 'None');
             
             % draw lane boundaries ([x1 x2], [y1 y2])
             plot([-1 1]*wsize, [-1 -1]*hrwidth, 'k', 'LineWidth', 2);
+            plot([-1 1]*wsize, [0 0], 'w', 'LineWidth', 1);
             plot([-1 1]*wsize, [1 1]*hrwidth, 'k', 'LineWidth', 2);
             
-            % draw white line in the middle of road
-            for i = (-hrwidth+lwidth):lwidth:(hrwidth-lwidth)
-                for j = -wsize:2:wsize
-                    plot([j+1 j+2], [1 1]*i, 'w', 'LineWidth', 2);
-                end
+            % draw the parking spot
+            for i = (-wsize+0.5):1:(wsize-0.5)
+                plot([1 1]*i, [0 -1]*hrwidth, 'w', 'LineWidth', 1);
             end
-        end   
+        
+        end 
     end
 end

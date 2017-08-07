@@ -15,14 +15,14 @@ LIGHT_POSITION = [-1.25 -1.25];
 NUM_OF_CARS = 3;
 
 % pedestrian configuration
-NUM_OF_PEDES = 3;
+NUM_OF_PEDES = 4;
 
 % traffic rules;
 MIN_SAFE_DIST = 1;
 
 % simulation configuration
 START_TIME = 0;
-STOP_TIME = 50;
+STOP_TIME = 40;
 
 % pack parameters into a dictionary
 params = containers.Map('UniformValues',false);
@@ -33,7 +33,7 @@ params('NUM_OF_CARS') = NUM_OF_CARS;
 params('SAFE_DIST') = MIN_SAFE_DIST;
 
 % create display objects
-env = environment(WORLD_SIZE, LANE_WIDTH); 
+env = intersection(WORLD_SIZE, LANE_WIDTH); 
 light = traffLight(LIGHT_POSITION);
 
 % add light and vehicles to the map
@@ -48,6 +48,7 @@ end
 env.addPedestrian(pedestrian([-1 -1.125], [1 0]));
 env.addPedestrian(pedestrian([1.125 -1], [0 1]));
 env.addPedestrian(pedestrian([1 1.125], [-1 0]));
+env.addPedestrian(pedestrian([1.125 1], [0 -1]));
 
 % run simulation
 mdl = 'experiment';
