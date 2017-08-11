@@ -12,7 +12,7 @@ LANE_NUM = 4;
 
 % simulation configuration
 START_TIME = 0;
-STOP_TIME = 30; 
+STOP_TIME = 20; 
 
 % vehicles configuration
 NUM_OF_CARS = 6;
@@ -59,7 +59,7 @@ for i=1:size(pos,3)
     
     % redraw the screen
     env.draw();
-    pause(0.01);
+    pause(0.03);
 end
 
 % close simulation window
