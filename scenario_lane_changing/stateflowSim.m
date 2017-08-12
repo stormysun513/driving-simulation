@@ -12,7 +12,7 @@ LANE_NUM = 4;
 
 % simulation configuration
 START_TIME = 0;
-STOP_TIME = 20; 
+STOP_TIME = 60; 
 
 % vehicles configuration
 NUM_OF_CARS = 6;
@@ -38,6 +38,7 @@ end
 % run simulation
 mdl = 'lineChanging';
 load_system(mdl);
+% randomInitialize(mdl,params);
 % configModel(mdl,params);
 cs = getActiveConfigSet(mdl);
 set_param(cs, 'StartTime', int2str(START_TIME));
