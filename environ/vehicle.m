@@ -1,3 +1,25 @@
+%{
+
+the vehicle handle object, fields in the properties block should be self
+explanatory
+
+id          - the car id used to distinguish different cars
+position    - car position (corresponding to data store X in simulink model)
+orientation - car orientation (corresponding to data store D in simulink model)
+velocity    - not used in the simulink model (obsolete)
+agent       - not used in the simulink model (obsolete)
+color       - car color, determined at the constructor
+label       - text form of the id
+
+<< gui properties for warning region display >>
+
+showWarnRegion
+frontAngle
+longSafeDist
+shortSafeDist
+
+%}
+
 classdef vehicle < handle
     
     properties
@@ -32,7 +54,11 @@ classdef vehicle < handle
     
     methods
         
-        % constructor
+        % constructor: it accepts four arguments during instantiation
+        % 1. position
+        % 2. orientation
+        % 3. velocity
+        % 4. agent type
         function this = vehicle(varargin)
             this.id = vehicle.getOrSetNextIndex();
             this.position = [0 0];
@@ -43,7 +69,9 @@ classdef vehicle < handle
             this.label = int2str(this.id);
             
             this.showWarnRegion = true;
-            this.frontAngle = 0.7854; % deg2rad(45)
+            
+            % set default warning angle to deg2rad(45)
+            this.frontAngle = 0.7854;
             this.longSafeDist = 1;
             this.shortSafeDist = 0.5;
             
@@ -83,10 +111,14 @@ classdef vehicle < handle
             this.showWarnRegion = enabled;
         end
         
+        % change the fan-shaped region according to states in the simlulink
+        % model
         function setLongSafeDist(this, dist)
             this.longSafeDist = dist;
         end
         
+        % change the fan-shaped angle according to states in the simlulink
+        % model
         function setFrontAngle(this, angle)
             this.frontAngle = deg2rad(angle);
         end
@@ -115,6 +147,7 @@ classdef vehicle < handle
             end
         end
         
+        % update the vehicle on the gui
         function drawVehicle(this)
             
             r1 = [4/5 -3/5; 3/5 4/5];
@@ -133,6 +166,8 @@ classdef vehicle < handle
             
         end
         
+        % draw the warning region (use showWarnRegion as a flag to determine
+        % whether to show the region)
         function drawWarnArea(this)
             
             theta = this.frontAngle;
