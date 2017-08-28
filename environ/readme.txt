@@ -13,3 +13,5 @@ env.draw()
 to update the gui, it will then call all the objects' draw methods. one must
 note that any updates of locations or statuses must be completed before
 calling draw function.
+
+more details are written in each file

@@ -1,5 +1,10 @@
 %{
 
+file: vehicle.m
+author: yu lun tsai
+date: Aug 15, 2017
+email: stormysun513@gmail.com
+
 the vehicle handle object, fields in the properties block should be self
 explanatory
 
@@ -22,6 +27,7 @@ shortSafeDist
 
 classdef vehicle < handle
     
+    % instance properties
     properties
         id
         position
@@ -37,7 +43,12 @@ classdef vehicle < handle
         shortSafeDist
     end
     
+    % class variables
     methods (Static)
+        
+        % always return the next number available for index,
+        % if argument is provided, it will reset the counter to the 
+        % specified value
         function out = getOrSetNextIndex(varargin)
             persistent count;
             if isempty(count), count = 0; end
@@ -56,10 +67,13 @@ classdef vehicle < handle
         
         % constructor: it accepts four arguments during instantiation
         % 1. position
-        % 2. orientation
+        % 2. orientation (precondition: an unit vector)
         % 3. velocity
         % 4. agent type
         function this = vehicle(varargin)
+            
+            fields = {'position','orientation','velocity','agent'};
+            
             this.id = vehicle.getOrSetNextIndex();
             this.position = [0 0];
             this.orientation = [1 0];
@@ -67,24 +81,26 @@ classdef vehicle < handle
             this.drivingState = DrivingState.Straight;
             this.color = rand(1, 3);
             this.label = int2str(this.id);
-            
             this.showWarnRegion = true;
             
-            % set default warning angle to deg2rad(45)
-            this.frontAngle = 0.7854;
+            % default warning region parameters
+            this.frontAngle = 0.7854; % deg2rad(45)
             this.longSafeDist = 1;
             this.shortSafeDist = 0.5;
             
-            if nargin, this.position = varargin{1}; end
-            if nargin > 1
-                if ~any(varargin{2})
-                    warning('zero vector is not allowed for direction');
-                else
-                    this.orientation = varargin{2}/norm(varargin{2});
-                end
+            for i = 1:nargin
+                this.(fields{i}) = varargin{i};
             end
-            if nargin > 2, this.velocity = varargin{3}; end
-            if nargin > 3, this.agent = varargin{4}; end
+%             if nargin, this.position = varargin{1}; end
+%             if nargin > 1
+%                 if ~any(varargin{2})
+%                     warning('zero vector is not allowed for direction');
+%                 else
+%                     this.orientation = varargin{2}/norm(varargin{2});
+%                 end
+%             end
+%             if nargin > 2, this.velocity = varargin{3}; end
+%             if nargin > 3, this.agent = varargin{4}; end
         end
         
         % update next state based on environment and itself

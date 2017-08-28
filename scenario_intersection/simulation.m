@@ -45,13 +45,16 @@ for i=1:NUM_OF_CARS
     env.addVehicle(v);
 end
 
+% add the pedestrian into the environment, the arg1 is the initial position
+% and the arg2 is its proceed direction, the number of pedestrian must be
+% consistent with NUM_OF_PEDES defined above
 env.addPedestrian(pedestrian([-1 -1.125], [1 0]));
 env.addPedestrian(pedestrian([1.125 -1], [0 1]));
 env.addPedestrian(pedestrian([1 1.125], [-1 0]));
 env.addPedestrian(pedestrian([1.125 1], [0 -1]));
 
 % run simulation
-mdl = 'experiment';
+mdl = 'roadIntersection';
 load_system(mdl);
 % configModel(mdl,params);
 cs = getActiveConfigSet(mdl);

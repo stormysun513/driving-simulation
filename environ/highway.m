@@ -1,3 +1,25 @@
+%{ 
+
+file: highway.m
+author: yu lun tsai
+date: Aug 15, 2017
+email: stormysun513@gmail.com
+
+the highway environment is used in the multilane_rush and twolane_rush
+model. it has several fields to determine how the environment is rendered
+
+world_size      - the length of the rounded highway in the window. once cars
+                exceeds the left end of the window, they will appears in the 
+                right end
+
+lane_width      - the lane width of highway
+lane_num        - the number of lanes in the highway
+vehicles        - a cell array used to store vehicle handles, when
+                highway.draw() is called, it will call the draw function in
+                each vehicle
+
+%}
+
 classdef highway < handle
     
     properties
@@ -15,8 +37,7 @@ classdef highway < handle
     end
     
     methods
-        
-        % constructor
+        % constructor: the order of argument is specified in fields
         function this = highway(varargin)
             fields = {'world_size','lane_width','lane_num'};
             this.world_size = 12;
@@ -76,7 +97,6 @@ classdef highway < handle
             wsize = this.world_size;                    % world size
             lnum = this.lane_num;                       % lane num
             lwidth = this.lane_width;                   % lane width
-%             lllength = 0.75*lwidth;                     % lane line width
             
             % compute the width of half road
             rwidth = lwidth*lnum;

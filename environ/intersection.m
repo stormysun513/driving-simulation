@@ -1,3 +1,29 @@
+%{ 
+
+file: intersection.m
+author: yu lun tsai
+date: Aug 15, 2017
+email: stormysun513@gmail.com
+
+the intersection environment handle is used in the intersection model.
+it has several fields to determine how the environment is rendered
+
+world_size      - the length of the rounded highway in the window. once cars
+                exceeds the left end of the window, they will appears in the 
+                right end
+
+lane_width      - the lane width of highway
+light           - a light handle
+intersection_x  - specify the horizontal boundary of the intersection
+                region
+intersection_y  - dpecify the vertical boundary of the intersection region
+vehicles        - a cell array storing vehicle handles, when intersection.draw() 
+                is called, it will call the draw function in each vehicle
+pedestrians     - a cell array storing pedestrian handles, when 
+                intersection.draw() is called, it will call the draw
+                funciton in each pedestrian
+%}
+
 classdef intersection < handle
     
     properties
@@ -20,8 +46,13 @@ classdef intersection < handle
     methods
         % constructor
         function this = intersection(varargin)
-            this.world_size = varargin{1};
-            this.lane_width = varargin{2};
+            fields = {'world_size','lane_width'};
+            this.world_size = 8;
+            this.lane_width = 1;
+            for i = 1:nargin
+                this.(fields{i}) = varargin{i};
+            end
+            
             this.vehicles = {};
             this.light = [];
             this.intersect_x = [-1 1] * this.lane_width;

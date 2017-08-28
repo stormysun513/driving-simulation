@@ -1,3 +1,22 @@
+%{ 
+
+file: road.m
+author: yu lun tsai
+date: Aug 15, 2017
+email: stormysun513@gmail.com
+
+the road environment is used in the parallel parking scenario, the following
+ properties determine how the environment is rendered
+
+world_size      - the length of the rounded highway in the window. once cars
+                exceeds the left end of the window, they will appears in the 
+                right end
+vehicles        - a cell array used to store vehicle handles, when
+                highway.draw() is called, it will call the draw function in
+                each vehicle
+
+%}
+
 classdef road < handle
     
     properties
@@ -72,7 +91,7 @@ classdef road < handle
              
             wsize = this.world_size;                    % world size
             lnum = 2;                                   % lane num
-            lwidth = road.LANE_WIDTH;
+            lwidth = road.LANE_WIDTH;                   % lane width
             
             % compute the width of half road
             rwidth = lwidth*lnum;

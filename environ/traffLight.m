@@ -1,3 +1,22 @@
+%{ 
+
+file: trafficLight.m
+author: yu lun tsai
+date: Aug 15, 2017
+email: stormysun513@gmail.com
+
+the light handle class that defines the propeties used to display the
+traffic light status at the road intersection
+
+x               - the x position of the left-bottom light
+y               - the y position of the left-bottom light
+h_value         - the light status for the horizontal traffic
+v_value         - the light status for the vertical traffic
+elapsed         - the time elapsed since last change
+interval        - the period of the traffic light
+
+%}
+
 classdef traffLight < handle
     
     properties
@@ -17,26 +36,25 @@ classdef traffLight < handle
     
     methods
         
+        % constructor
         function this = traffLight(varargin)
+            
+            this.elapsed = 0;
+            this.interval = 5;
+            this.h_value = traffLight.GREEN;
+            this.v_value = traffLight.RED;
             this.x = varargin{1}(1);
             this.y = varargin{1}(2);
             
             if nargin > 1
                 this.interval = varargin{2};
-            else
-                this.interval = 5;
             end
-            
             if nargin > 2
                 this.elapsed = varargin{3};
-            else
-                this.elapsed = 0;
             end
-            
-            this.h_value = traffLight.GREEN;
-            this.v_value = traffLight.RED;
         end
         
+        % update current pedestrian position
         function update(this, delta)
             time = this.elapsed + delta;
             if time >= this.interval
@@ -55,6 +73,8 @@ classdef traffLight < handle
             end
         end
         
+        % given a vehicle handle, this function return the current
+        % light status targeted for it based on its location
         function res = getClosetValue(this, vehicle)
             pos = vehicle.position;
             if pos(1)*pos(2) > 0
@@ -64,10 +84,12 @@ classdef traffLight < handle
             end
         end
         
+        % get the current status
         function res = getValue(this)
             res = this.h_value;
         end
         
+        % update the current status
         function setValue(this, val)
             switch val
                 case 1
@@ -89,6 +111,7 @@ classdef traffLight < handle
         
         % draw the traffic light on the road intersection
         function draw(this)
+            
             % light for horizontal lane
             fill([0.25 -0.25 -0.25 0.25] + this.x, ...
                 [0.25 0.25 -0.25 -0.25] + this.y, [0 0 0]);
@@ -107,6 +130,7 @@ classdef traffLight < handle
         end
     end
     
+    % helper function for drawing circle in matlab gui window
     methods (Static)     
         % helper function to draw circle
         function h = circle(x, y, r, MarkerFaceColor, MarkerEdgeColor)
